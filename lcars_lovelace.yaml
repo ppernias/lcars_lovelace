@@ -1,0 +1,555 @@
+kiosk_mode:
+  kiosk: true
+  mobile_settings:
+    hide_header: true
+    ignore_entity_settings: true
+views:
+  - theme: LCARS titan
+    title: Home
+    type: custom:grid-layout
+    badges: []
+    cards:
+      - square: false
+        columns: 1
+        type: grid
+        cards:
+          - type: markdown
+            content: '# USS MIKASA'
+            theme: LCARS Lower Decks light blue
+            card_mod:
+              class: bar-large-right
+          - square: true
+            columns: 3
+            type: grid
+            cards:
+              - square: false
+                columns: 1
+                type: grid
+                cards:
+                  - type: markdown
+                    content: '# Luminarias'
+                    card_mod:
+                      class: header-contained
+                  - square: false
+                    columns: 2
+                    type: grid
+                    cards:
+                      - show_name: true
+                        show_icon: true
+                        type: button
+                        tap_action:
+                          action: toggle
+                        name: Entrada
+                        icon: ''
+                        show_state: true
+                        entity: light.entrada
+                        card_mod:
+                          class: button-bullet
+                      - show_name: true
+                        show_icon: true
+                        type: button
+                        tap_action:
+                          action: toggle
+                        entity: light.pergola
+                        name: pérgola
+                        icon: ''
+                        show_state: true
+                        card_mod:
+                          class: button-bullet-right
+                      - show_name: true
+                        show_icon: true
+                        type: button
+                        tap_action:
+                          action: toggle
+                        name: Parra
+                        icon: ''
+                        show_state: true
+                        entity: light.parra
+                        card_mod:
+                          class: button-bullet
+                      - show_name: true
+                        show_icon: true
+                        type: button
+                        tap_action:
+                          action: toggle
+                        name: Muro
+                        icon: ''
+                        show_state: true
+                        entity: light.muro
+                        card_mod:
+                          class: button-bullet-right
+                      - show_name: true
+                        show_icon: true
+                        type: button
+                        tap_action:
+                          action: toggle
+                        name: Barbacoa
+                        icon: ''
+                        show_state: true
+                        entity: light.bbq
+                        card_mod:
+                          class: button-bullet
+                      - show_name: true
+                        show_icon: true
+                        type: button
+                        tap_action:
+                          action: toggle
+                        name: Piscina
+                        icon: ''
+                        show_state: true
+                        entity: light.piscina
+                        card_mod:
+                          class: button-bullet-right
+                  - type: entities
+                    entities:
+                      - entity: switch.tasmota_riego_huerta_2
+                        name: Riego del huerto
+                        secondary_info: last-changed
+                    state_color: true
+                    card_mod:
+                      class: middle-contained
+                  - type: conditional
+                    conditions:
+                      - entity: timer.boton_videoportero
+                        state: idle
+                    card:
+                      type: picture
+                      image: /local/images/lcars/ship.gif
+                      hold_action:
+                        action: none
+                      tap_action:
+                        action: call-service
+                        service: input_boolean.toggle
+                        data: {}
+                        target: input_button.videoportero_ver_camara
+                  - type: conditional
+                    conditions:
+                      - entity: timer.boton_videoportero
+                        state_not: idle
+                    card:
+                      show_state: true
+                      show_name: true
+                      camera_view: auto
+                      type: picture-entity
+                      entity: camera.portero_main
+                      aspect_ratio: '3:1'
+              - square: false
+                columns: 1
+                type: grid
+                cards:
+                  - type: markdown
+                    content: '# Energía Solar'
+                    card_mod:
+                      class: header-contained
+                  - type: picture-elements
+                    elements:
+                      - type: image
+                        entity: input_text.modo_consumo
+                        state_image:
+                          S: /local/images/lcars/sun.png
+                          R: /local/images/lcars/grid.png
+                        style:
+                          top: 5%
+                          left: 50%
+                          font-size: 2em
+                      - type: state-label
+                        entity: sensor.pv_power
+                        style:
+                          top: 21%
+                          left: 18%
+                          font-size: 2em
+                      - type: state-label
+                        entity: sensor.load_power
+                        style:
+                          top: 20%
+                          left: 82%
+                          font-size: 2em
+                      - type: state-label
+                        entity: sensor.battery_power
+                        style:
+                          top: 78%
+                          left: 17%
+                          font-size: 2em
+                      - type: state-label
+                        entity: sensor.grid_power
+                        style:
+                          top: 78%
+                          left: 82%
+                          font-size: 2em
+                      - type: state-label
+                        entity: sensor.state_of_charge
+                        style:
+                          top: 95%
+                          left: 50%
+                          font-size: 2em
+                    image: /local/images/lcars/warp_core_tesla.gif
+                    card_mod:
+                      class: middle-contained
+                  - type: markdown
+                    content: '## &nbsp;'
+                    card_mod:
+                      class: footer-contained
+                  - square: false
+                    columns: 1
+                    type: grid
+                    cards: []
+              - square: false
+                columns: 1
+                type: grid
+                cards:
+                  - type: markdown
+                    content: '# Energía Térmica'
+                    card_mod:
+                      class: header-contained
+                  - square: false
+                    columns: 2
+                    type: grid
+                    cards:
+                      - hours_to_show: 24
+                        graph: none
+                        type: sensor
+                        detail: 1
+                        entity: sensor.d1_resol_solar_t_dep1
+                        name: depósito acs
+                        unit: º
+                        card_mod:
+                          class: sensor-bullet
+                      - show_name: true
+                        show_icon: true
+                        type: button
+                        tap_action:
+                          action: toggle
+                        entity: switch.jacuzzi_intercooler
+                        name: Jacuzzi
+                        icon: mdi:hot-tub
+                        show_state: true
+                        card_mod:
+                          class: button-bullet-right
+                      - hours_to_show: 24
+                        graph: none
+                        type: sensor
+                        detail: 1
+                        entity: sensor.d1_resol_solar_t_dep2a
+                        name: acumulador SR A
+                        unit: º
+                        card_mod:
+                          class: sensor-bullet
+                      - show_name: true
+                        show_icon: true
+                        type: button
+                        tap_action:
+                          action: toggle
+                        entity: timer.filtro
+                        name: Depuradora
+                        icon: mdi:pool
+                        show_state: true
+                        card_mod:
+                          class: button-bullet-right
+                      - hours_to_show: 24
+                        graph: none
+                        type: sensor
+                        detail: 1
+                        entity: sensor.d1_resol_solar_t_dep2b
+                        name: acumulador SR B
+                        unit: º
+                        card_mod:
+                          class: sensor-bullet
+                      - type: markdown
+                        content: '## &nbsp;'
+                        card_mod:
+                          class: middle-right
+                      - hours_to_show: 24
+                        graph: none
+                        type: sensor
+                        detail: 1
+                        entity: sensor.d1_resol_solar_t_col
+                        name: Captadores
+                        unit: º
+                        card_mod:
+                          class: sensor-bullet
+                      - show_name: true
+                        show_icon: true
+                        type: button
+                        tap_action:
+                          action: toggle
+                        entity: input_boolean.consumo_red
+                        icon: mdi:transmission-tower-export
+                        show_state: true
+                        name: consumo de red
+                        card_mod:
+                          class: button-bullet-right
+                      - hours_to_show: 24
+                        graph: none
+                        type: sensor
+                        detail: 1
+                        entity: sensor.jacuzzi_temp
+                        name: Jacuzzi
+                        unit: º
+                        card_mod:
+                          class: sensor-bullet
+                      - type: markdown
+                        card_mod:
+                          class: middle-right
+                        content: '## &nbsp;'
+                  - type: markdown
+                    card_mod:
+                      class: middle-contained
+                    content: '## &nbsp;'
+                  - type: markdown
+                    card_mod:
+                      class: middle-contained
+                    content: '## &nbsp;'
+                  - type: markdown
+                    card_mod:
+                      class: middle-contained
+                    content: '## &nbsp;'
+                  - type: markdown
+                    card_mod:
+                      class: footer-contained
+                    content: '## &nbsp;'
+          - square: false
+            columns: 1
+            type: grid
+            cards:
+              - square: false
+                columns: 8
+                type: grid
+                cards:
+                  - show_name: true
+                    show_icon: true
+                    type: button
+                    tap_action:
+                      action: toggle
+                    entity: switch.tasmota_base_1
+                    name: base 1
+                    show_state: true
+                    card_mod:
+                      class: button-lozenge
+                  - show_name: true
+                    show_icon: true
+                    type: button
+                    tap_action:
+                      action: toggle
+                    entity: switch.tasmota_base_2
+                    name: base 2
+                    show_state: true
+                    card_mod:
+                      class: button-lozenge
+                  - show_name: true
+                    show_icon: true
+                    type: button
+                    tap_action:
+                      action: toggle
+                    entity: switch.tasmota_base_3
+                    name: base 3
+                    show_state: true
+                    card_mod:
+                      class: button-lozenge
+                  - show_name: true
+                    show_icon: true
+                    type: button
+                    tap_action:
+                      action: toggle
+                    entity: light.lampara_escalera
+                    name: escalera
+                    show_state: true
+                    icon: mdi:post-lamp
+                    card_mod:
+                      class: button-lozenge
+                  - show_name: true
+                    show_icon: true
+                    type: button
+                    tap_action:
+                      action: toggle
+                    entity: light.bombilla_vintage
+                    name: vintage
+                    show_state: true
+                    card_mod:
+                      class: button-lozenge
+                  - show_name: true
+                    show_icon: true
+                    type: button
+                    tap_action:
+                      action: toggle
+                    entity: light.flexopedro
+                    name: flexoP
+                    show_state: true
+                    card_mod:
+                      class: button-lozenge
+                  - show_name: true
+                    show_icon: true
+                    type: button
+                    tap_action:
+                      action: toggle
+                    entity: light.techoestudio
+                    name: Techo P
+                    show_state: true
+                    card_mod:
+                      class: button-lozenge
+                  - show_name: true
+                    show_icon: true
+                    type: button
+                    tap_action:
+                      action: toggle
+                    entity: light.luz_techo_mariam
+                    name: Techo M
+                    show_state: true
+                    card_mod:
+                      class: button-lozenge
+                  - show_name: true
+                    show_icon: true
+                    type: button
+                    tap_action:
+                      action: toggle
+                    entity: light.lampara_comedor_2
+                    show_state: true
+                    name: Comedor
+                    icon: mdi:lamp
+                    card_mod:
+                      class: button-lozenge
+                  - show_name: true
+                    show_icon: true
+                    type: button
+                    tap_action:
+                      action: toggle
+                    entity: light.porta1
+                    show_state: true
+                    name: Sillón
+                    icon: mdi:lamp
+                    card_mod:
+                      class: button-lozenge
+                  - show_name: true
+                    show_icon: true
+                    type: button
+                    tap_action:
+                      action: toggle
+                    entity: light.porta2
+                    show_state: true
+                    name: Chester
+                    icon: mdi:lamp
+                    card_mod:
+                      class: button-lozenge
+                  - show_name: true
+                    show_icon: true
+                    type: button
+                    tap_action:
+                      action: toggle
+                    entity: light.conmutador_lampara_estudio
+                    show_state: true
+                    name: estudio
+                    card_mod:
+                      class: button-lozenge
+                  - show_name: true
+                    show_icon: true
+                    type: button
+                    tap_action:
+                      action: toggle
+                    entity: light.interruptor_lampara_salon
+                    show_state: true
+                    name: Salón
+                    card_mod:
+                      class: button-lozenge
+                  - show_name: true
+                    show_icon: true
+                    type: button
+                    tap_action:
+                      action: toggle
+                    entity: light.bbq_cocina
+                    show_state: true
+                    name: BBQ Cocina
+                    card_mod:
+                      class: button-lozenge
+                  - show_name: true
+                    show_icon: true
+                    type: button
+                    tap_action:
+                      action: toggle
+                    entity: light.interruptor_luz_exterior_piscina
+                    show_state: true
+                    name: foco piscina
+                    card_mod:
+                      class: button-lozenge
+              - type: markdown
+                card_mod:
+                  class: footer
+                content: '# otros sistemas'
+              - type: markdown
+                card_mod:
+                  class: header
+                content: '# Soporte vital'
+              - square: false
+                columns: 5
+                type: grid
+                cards:
+                  - hours_to_show: 24
+                    graph: none
+                    type: sensor
+                    detail: 1
+                    entity: sensor.termosalon_temperature
+                    name: Salón
+                    unit: º
+                    card_mod:
+                      class: sensor-bullet
+                  - hours_to_show: 24
+                    graph: none
+                    type: sensor
+                    detail: 1
+                    entity: sensor.termohpiscina_temperature
+                    name: hPiscina
+                    unit: º
+                    card_mod:
+                      class: sensor-bullet
+                  - hours_to_show: 24
+                    graph: none
+                    type: sensor
+                    detail: 1
+                    entity: sensor.termohjardin_temperature
+                    name: hJardín
+                    unit: º
+                    card_mod:
+                      class: sensor-bullet
+                  - hours_to_show: 24
+                    graph: none
+                    type: sensor
+                    detail: 1
+                    entity: sensor.termoestudio_temperature
+                    name: Estudio
+                    unit: º
+                    card_mod:
+                      class: sensor-bullet
+                  - hours_to_show: 24
+                    graph: none
+                    type: sensor
+                    detail: 1
+                    entity: sensor.termodormitorio_temperature
+                    name: Dormitorio
+                    unit: º
+                    card_mod:
+                      class: sensor-bullet
+                  - hours_to_show: 24
+                    graph: none
+                    type: sensor
+                    detail: 1
+                    entity: sensor.soil_sensor_01_soil_moisture
+                    name: HR jardín I
+                    unit: null
+                    card_mod:
+                      class: sensor-bullet
+                  - hours_to_show: 24
+                    graph: none
+                    type: sensor
+                    detail: 1
+                    entity: sensor.soil_sensor_03_soil_moisture
+                    name: HR jardín D
+                    unit: null
+                    card_mod:
+                      class: sensor-bullet
+                  - hours_to_show: 24
+                    graph: none
+                    type: sensor
+                    detail: 1
+                    entity: sensor.soil_sensor_02_soil_moisture
+                    name: humedad huerto
+                    unit: null
+                    card_mod:
+                      class: sensor-bullet
